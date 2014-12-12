@@ -78,11 +78,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Statements\Program.cpp" />
+    <ClCompile Include="src\Parser.cpp" />
+    <ClCompile Include="src\Statements\Factor.cpp" />
+    <ClCompile Include="src\Statements\SimpExpr.cpp" />
+    <ClCompile Include="src\Statements\Command.cpp" />
     <ClCompile Include="src\Scan.cpp" />
     <ClCompile Include="src\Mainer.cpp" />
+    <ClCompile Include="src\Statements\Statement.cpp" />
+    <ClCompile Include="src\Statements\Term.cpp" />
+    <ClCompile Include="src\Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Statements\AllStatements.h" />
+    <ClInclude Include="src\Statements\Program.h" />
+    <ClInclude Include="src\Parser.h" />
+    <ClInclude Include="src\Statements\Factor.h" />
+    <ClInclude Include="src\Statements\SimpExpr.h" />
+    <ClInclude Include="src\Statements\Command.h" />
     <ClInclude Include="src\Scan.h" />
+    <ClInclude Include="src\Statements\Statement.h" />
+    <ClInclude Include="src\Statements\Term.h" />
+    <ClInclude Include="src\Stack.h" />
+    <ClInclude Include="src\SysType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
