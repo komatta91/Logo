@@ -37,5 +37,6 @@ enum SysType {
 		rbracket,	// ']'
 		lparent,	// '('
 		rparent,	    // ')'
+		end,        //koniec
 		error
 	};

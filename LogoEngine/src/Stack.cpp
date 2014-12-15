@@ -16,9 +16,13 @@ Stack& Stack::GetInstance()
     return instance;
 }
 
-int Stack::GetValue(std::string& name)
+int Stack::GetValue(const std::string& name)
 {
 	std::cout << "method\n";
+	if (name == "kot")
+	{
+		return 10;
+	}
 	return 0;
 }
 

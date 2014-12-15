@@ -4,10 +4,9 @@
 #include <Stack.h>
 int Factor::Execute(void)
 {
-	//std::cout << "Factor\n";
 	if (!name.empty())
 	{
-		Stack::GetInstance().GetValue(name);
+		return Stack::GetInstance().GetValue(name);
 	}
 	if (expr)
 	{

@@ -1,7 +1,7 @@
 #include "Scan.h"
 #include <sstream>
 
-Scan::Scan(std::string source) : source(source), textPos(0)
+Scan::Scan(std::string source) : source(source), textPos(0), lineNum(1)
 {
 	maper["np"] = np;
 	maper["ws"] = ws; 
@@ -35,6 +35,7 @@ SysType Scan::NextSymbol()
 		{
 			if (c == '\n')
 			{
+				++lineNum;
 				return nl;
 			}
 			nextChar(c);
@@ -115,6 +116,9 @@ SysType Scan::NextSymbol()
 				case '[': return lbracket;
 				case ']': return rbracket;
 		}
+	} else 
+	{
+		return end;
 	}
 	return error;
 }

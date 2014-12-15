@@ -6,15 +6,30 @@
 
 int main(int argc, const char* argv[])
 {
-	Scan scan(//"np 10\n" 
+	Scan scan("np 12\n" 
 			  //"lw 90\n" 
 			  //"np 10\n" 
 			  //"lw 90\n" 
-			  //"np 10\n" 
-			  //"lw 90\n"
-			  //"np 10\n" 
-			  "lw 90\n");
+			  //"lw ((4 + 6 ) * 5) + pies\n" 
+			  //"lw ((4 + 6 ) * 5) + kot\n" 
+			  //"opu     \n"
+			  //"pod\n" 
+			  //"lw ((4 + 6 ) * 5) + 10\n"
+			  "jesli (((4 + 6 ) * 5) + kot > ((4 + 6 ) * 5) + pies) [ lw 1 ] [ jesli (1 > 2) [ lw 2 ] [ lw 3 pod ] ]\n"
+			  );
 	
+	
+	/*
+	SysType type;
+	while(error != (type = scan.NextSymbol()))
+	{
+		if (nl == type)
+		{
+			std::cout << "LineNum: " << scan.LineNum() - 1 << std::endl;
+		}
+	}
+	*/
+
 	//char c;
 	//SysType type;
 	//while(error != (type = scan.NextSymbol()))
@@ -32,16 +47,20 @@ int main(int argc, const char* argv[])
 	//		std::cout << "NextChar: (" << type << ")" << std::endl;
 	//	}
 	//}
+	
 	Parser p(&scan);
-	p.Parse();
-	p.GetProgram()->Execute();
+	if (p.Parse())
+	{
+		p.GetProgram()->Execute();
+	}
 
-	Factor* fac = new Factor(10);
-	Term* term = new Term(fac, '*', fac);
-	SimpExpr* exp = new SimpExpr(term, '+', term);
 
-	std::cout << "SimpExpr: " << exp->Execute() << std::endl;
+	//Factor* fac = new Factor(10);
+	//Term* term = new Term(fac, '*', fac);
+	//SimpExpr* exp = new SimpExpr(term, '+', term);
 
+	//std::cout << "SimpExpr: " << exp->Execute() << std::endl;
+	
 
 
 	std::cout << "Hello!!!" << std::endl;

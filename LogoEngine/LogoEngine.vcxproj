@@ -78,6 +78,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Statements\Condition.cpp" />
+    <ClCompile Include="src\Statements\Order.cpp" />
     <ClCompile Include="src\Statements\Program.cpp" />
     <ClCompile Include="src\Parser.cpp" />
     <ClCompile Include="src\Statements\Factor.cpp" />
@@ -90,6 +92,8 @@
     <ClCompile Include="src\Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Statements\Condition.h" />
+    <ClInclude Include="src\Statements\Order.h" />
     <ClInclude Include="src\Statements\AllStatements.h" />
     <ClInclude Include="src\Statements\Program.h" />
     <ClInclude Include="src\Parser.h" />

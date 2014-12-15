@@ -9,6 +9,6 @@ class Stack
 	~Stack(void);
 public:
 	static Stack& GetInstance();
-	int GetValue(std::string& name);
+	int GetValue(const std::string& name);
 };
 
