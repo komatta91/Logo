@@ -25,8 +25,7 @@ void Turtle::Move(int amount)
 
 	double radiany = (dir * M_PI) / 180.0f;
 	double sin_ = sin(radiany);
-	double cos_ = cos(radiany);
-	
+    double cos_ = cos(radiany);
 	x += (amount * sin_ + 0.5);
 	y += (amount * cos_ + 0.5);
 }

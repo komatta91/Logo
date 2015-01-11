@@ -11,14 +11,14 @@ int main(int argc, const char* argv[])
 
 
 
-			  "oto kwadrat bok\n"
-			  "powtorz 4[np bok lw 90 bok = bok / 2]\n"
-			  "juz\n"
-			  ":bok 100\n"
-			  "powtorz 4[kwadrat bok bok = bok / 2 czekaj 2000]\n"
+			  //"oto kwadrat bok\n"
+			  //"powtorz 4[np bok lw 90 bok = bok / 2]\n"
+			  //"juz\n"
+			  //":bok 100\n"
+			  //"powtorz 4[kwadrat bok bok = bok / 2 czekaj 2000]\n"
+			  "np 10\n"
 			  );
-	
-	
+
 	/*
 
 

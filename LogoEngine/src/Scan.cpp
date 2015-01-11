@@ -4,7 +4,7 @@
 Scan::Scan(std::string source) : source(source), textPos(0), lineNum(1)
 {
 	maper["np"] = np;
-	maper["ws"] = ws; 
+	maper["ws"] = wst; 
 	maper["pw"] = pw;
 	maper["lw"] = lw; 
 	maper["czekaj"] = czekaj; 

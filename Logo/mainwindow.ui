@@ -44,16 +44,6 @@
    <property name="enabled">
     <bool>true</bool>
    </property>
-   <widget class="QPlainTextEdit" name="source">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>470</y>
-      <width>651</width>
-      <height>141</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="save">
     <property name="geometry">
      <rect>
@@ -116,6 +106,49 @@
     <property name="text">
      <string>Rysuj</string>
     </property>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>470</y>
+      <width>661</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="programTab">
+     <attribute name="title">
+      <string>Program</string>
+     </attribute>
+     <widget class="QPlainTextEdit" name="source">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>661</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="errorsTab">
+     <attribute name="title">
+      <string>Błędy</string>
+     </attribute>
+     <widget class="QPlainTextEdit" name="errors">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>661</width>
+        <height>131</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

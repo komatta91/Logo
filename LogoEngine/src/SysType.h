@@ -2,7 +2,7 @@
 
 enum SysType {
 		np, 
-		ws, 
+        wst,
 		pw, 
 		lw, 
 		czekaj, 
@@ -16,7 +16,7 @@ enum SysType {
 		juz, 
 		jesli,
 		ident,      //napis
-		intconst,   //sta³a
+		intconst,   //staï¿½a
 		becomes,    // '='
 		define,     // ':'
 		nl,         // '\n'

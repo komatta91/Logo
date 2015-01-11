@@ -1,5 +1,6 @@
 #include "Parser.h"
 #include <iostream>
+#include <sstream>
 
 
 
@@ -110,7 +111,7 @@ Statement* Parser::ParseLine()
 	switch (actual.top())
 	{
 		case np: 
-		case ws: 
+		case wst: 
 		case pw: 
 		case lw: 
 		case czekaj:
@@ -158,7 +159,7 @@ Statement* Parser::ParseLine()
 	}
 
 	setOnTop();
-	if (actual.top() == nl)
+    if (actual.top() == nl || actual.top() == end)
 	{
 		actual.pop();
 		return s;
@@ -352,7 +353,7 @@ std::list<Statement*>* Parser::parseList()
 			switch (actual.top())
 			{
 				case np: 
-				case ws: 
+				case wst: 
 				case pw: 
 				case lw: 
 				case czekaj:
@@ -432,7 +433,10 @@ void Parser::sendError()
 	
 	setOnTop();
 	std::cout << "ERROR: " << actual.top() << " at line " << (actual.top() == nl ? scan->LineNum() -1 : scan->LineNum()) << std::endl;
-	SysType token = actual.top();
+    std::ostringstream osstream;
+    osstream << "ERROR: " << actual.top() << " at line " << (actual.top() == nl ? scan->LineNum() - 1 : scan->LineNum()) << "\n" ;
+    errors.push_back(osstream.str());
+    SysType token = actual.top();
 	while (!(nl == token || end == token))
 	{
 		token = scan->NextSymbol();
@@ -450,4 +454,9 @@ bool Parser::setOnTop()
 		return true;
 	}
 	return false;
+}
+
+std::list<std::string> Parser::GetErrors() const
+{
+    return errors;
 }

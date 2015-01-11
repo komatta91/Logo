@@ -16,6 +16,7 @@ public:
 	~Parser(void);
 	bool Parse(void);
 	Program* GetProgram(void) { return program; };
+    std::list<std::string> GetErrors() const;
 
 private:
 	bool parseFunctionDec();

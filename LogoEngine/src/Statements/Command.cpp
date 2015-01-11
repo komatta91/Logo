@@ -23,7 +23,7 @@ int Command::Execute(void)
 			Turtle::GetInstance().Move(simpExpr->Execute());
 			break;
 		}
-		case ws:
+		case wst:
 		{
 			Turtle::GetInstance().Move(-simpExpr->Execute());
 			break;
@@ -40,7 +40,7 @@ int Command::Execute(void)
 		}
 		case czekaj:
 		{
-			_sleep(simpExpr->Execute());
+            _sleep(simpExpr->Execute());
 		}
 	}
 
