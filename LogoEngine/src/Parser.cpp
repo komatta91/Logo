@@ -296,7 +296,7 @@ Order* Parser::parseOrder()
 
 Condition* Parser::parseCondition()
 {
-	SysType type = actual.top();
+    SysType type = actual.top();
 	actual.pop();
 	setOnTop();
 	if (lparent == actual.top())

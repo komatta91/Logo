@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Statements/SimpExpr.h>
 #include <Stack.h>
+
 int Factor::Execute(void)
 {
 	if (!name.empty())
@@ -13,4 +14,15 @@ int Factor::Execute(void)
 		return expr->Execute();
 	}
 	return value;
+}
+
+Factor::~Factor()
+{
+    //SafeDelete(expr);
+    /*
+    if (expr)
+    {
+        delete expr;
+    }
+    */
 }

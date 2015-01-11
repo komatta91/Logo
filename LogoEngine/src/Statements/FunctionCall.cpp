@@ -13,6 +13,20 @@ FunctionCall::FunctionCall(Program* program, std::string ident, std::list<SimpEx
 
 FunctionCall::~FunctionCall()
 {
+    /*
+    if (exprList)
+    {
+        for each (auto expr in *exprList)
+        {
+            if (expr)
+            {
+                delete expr;
+            }
+        }
+
+        delete exprList;
+    }
+    */
 }
 
 int FunctionCall::Execute()
@@ -29,17 +43,10 @@ int FunctionCall::Execute()
 		Stack& s = Stack::GetInstance();
 		auto expr = exprList->begin();
 		for each (auto parameterName in *parametersNames)
-		{
-			//std::cout << "Parameter: " << parameterName << " = " << (*expr)->Execute() << std::endl;
-
+        {
 			Stack::GetInstance().SetValue(parameterName, (*expr)->Execute()); //wpisanie zmiennej wartoœci
 			expr++;
 		}
-
-		//for (int i = 0; i < list->size(); i++)
-		//{
-		//	
-		//}
 		function->Execute();
 		Stack::GetInstance().Leave(); // zdjêcie poziomu
 		return 0;

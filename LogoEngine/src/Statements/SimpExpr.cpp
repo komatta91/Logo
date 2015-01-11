@@ -19,3 +19,17 @@ int SimpExpr::Execute(void)
 	}
 	return -1;
 }
+
+SimpExpr::~SimpExpr()
+{
+    /*
+    if (term1)
+    {
+        delete term1;
+    }
+    if (term2)
+    {
+        delete term2;
+    }
+    */
+}

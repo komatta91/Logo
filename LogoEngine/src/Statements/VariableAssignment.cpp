@@ -9,6 +9,12 @@ VariableAssignment::VariableAssignment(std::string ident, SimpExpr* expr) : iden
 
 VariableAssignment::~VariableAssignment()
 {
+    /*
+    if (expr)
+    {
+        delete expr;
+    }
+    */
 }
 
 int VariableAssignment::Execute()

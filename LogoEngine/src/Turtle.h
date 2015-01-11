@@ -1,11 +1,15 @@
 #pragma once
+#include<QGraphicsScene>
+#include<QPen>
     
 class Turtle
 {
-	int x = 0;
-	int y = 0;
-	int dir = 0;
-	bool mark = true;
+    int x;
+    int y;
+    int dir;
+    bool mark;
+    QGraphicsScene* scene;
+    QPen defaultPen;
 
 	Turtle();
 	Turtle(const Turtle&);
@@ -14,6 +18,7 @@ public:
 	static const double M_PI;
 	~Turtle();
 	static Turtle& GetInstance();
+    void SetScene(QGraphicsScene* scene);
 	void Move(int amount);
 	void Rotate(int amount);
 	void SetMark(bool mark);

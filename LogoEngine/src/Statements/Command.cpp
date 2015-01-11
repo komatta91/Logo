@@ -9,7 +9,12 @@ Command::Command(SysType type, SimpExpr* simpExpr) : simpExpr(simpExpr), type(ty
 
 Command::~Command(void)
 {
-	delete simpExpr;
+    /*
+    if (simpExpr)
+    {
+        delete simpExpr;
+    }
+    */
 }
 
 int Command::Execute(void)

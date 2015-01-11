@@ -10,6 +10,12 @@ VariableDeclaration::VariableDeclaration(std::string name, SimpExpr* expr)
 
 VariableDeclaration::~VariableDeclaration()
 {
+    /*
+    if (expr)
+    {
+        delete expr;
+    }
+    */
 }
 
 int VariableDeclaration::Execute()

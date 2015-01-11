@@ -10,11 +10,44 @@ Condition::Condition(SimpExpr* expr1, SysType op, SimpExpr* expr2, std::list<Sta
 Condition::Condition(SimpExpr* expr1, SysType op, SimpExpr* expr2, std::list<Statement*>* list1, std::list<Statement*>* list2)
 	: expr1(expr1), expr2(expr2), op(op), list1(list1), list2(list2)
 {
+
 }
 
 
 Condition::~Condition(void)
 {
+    /*
+    if (expr1)
+    {
+        delete expr1;
+    }
+    if (expr2)
+    {
+        delete expr2;
+    }
+    if (list1)
+    {
+        for each (Statement* st in (*list1))
+        {
+            if (st)
+            {
+                delete st;
+            }
+        }
+        delete list1;
+    }
+    if (list2)
+    {
+        for each (Statement* st in (*list2))
+        {
+            if (st)
+            {
+                delete st;
+            }
+        }
+        delete list2;
+    }
+    */
 }
 
 int Condition::Execute()

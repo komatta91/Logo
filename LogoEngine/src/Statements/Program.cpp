@@ -9,11 +9,17 @@ Program::Program(void)
 
 Program::~Program(void)
 {
-	for(auto statement = statements.begin(); statement != statements.end(); ++statement)
+    /*
+    for(auto it = functions->begin(); it != functions->end(); ++it)
 	{
-		delete (*statement);
-	}
-	delete functions;
+        delete it->second;
+    }
+    delete functions;
+    for(auto statement = statements.begin(); statement != statements.end(); ++statement)
+    {
+        delete (*statement);
+    }
+    */
 }
 
 int Program::Execute(void)

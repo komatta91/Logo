@@ -10,6 +10,22 @@ FunctionDeclaration::FunctionDeclaration(std::string ident, std::list<std::strin
 
 FunctionDeclaration::~FunctionDeclaration()
 {
+    /*
+    if (parameters)
+    {
+        delete parameters;
+    }
+    if (function)
+    {
+        for each (auto st in (*function))
+        {
+            if (st)
+            {
+                delete st;
+            }
+        }
+    }
+    */
 }
 
 std::list<std::string>* FunctionDeclaration::GetParameters()

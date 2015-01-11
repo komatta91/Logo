@@ -11,6 +11,7 @@ class Term : public Statement
 public:
 	Term(Factor* factor) : factor1(factor), factor2(0) {}
 	Term(Factor* factor1, SysType op, Factor* factor2)  : factor1(factor1), factor2(factor2), op(op) {}
+    ~Term();
 	virtual int Execute(void);
 };
 

@@ -19,3 +19,17 @@ int Term::Execute(void)
 	}
 	return 0;
 }
+
+Term::~Term()
+{
+    /*
+    if (factor1)
+    {
+        delete factor1;
+    }
+    if (factor2)
+    {
+        delete factor1;
+    }
+    */
+}

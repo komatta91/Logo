@@ -11,6 +11,7 @@ class SimpExpr : public Statement
 public:
 	SimpExpr(Term* term) : term1(term), term2(0) {}
 	SimpExpr(Term* term1, SysType op, Term* term2) : term1(term1), term2(term2), op(op) {}
+    ~SimpExpr();
 	virtual int Execute(void);
 };
 

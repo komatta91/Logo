@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
-#include <QPen>
+
 
 namespace Ui {
 class MainWindow;
@@ -21,7 +21,7 @@ private:
     Ui::MainWindow *ui;
 
     QGraphicsScene *scene;
-    QPen defaultPen;
+
 
 public slots:
      void start(void);

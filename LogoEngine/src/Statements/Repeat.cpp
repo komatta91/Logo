@@ -8,6 +8,22 @@ Repeat::Repeat(SimpExpr* expr, std::list<Statement*>* list) : expr(expr), list(l
 
 Repeat::~Repeat()
 {
+    /*
+    if (list)
+    {
+        for each (auto it in (*list))
+        {
+            if (it)
+            {
+                delete it;
+            }
+        }
+    }
+    if (expr)
+    {
+        delete expr;
+    }
+    */
 }
 
 int Repeat::Execute()
