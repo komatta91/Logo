@@ -25,6 +25,8 @@ private:
 
 public slots:
      void start(void);
+     void loadFile(void);
+     void saveFile(void);
 };
 
 #endif // MAINWINDOW_H

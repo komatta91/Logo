@@ -7,6 +7,10 @@
 #include<iostream>
 #include<Turtle.h>
 #include <QPen>
+#include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
+#include <QMessageBox>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -17,6 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     QObject::connect(ui->draw, SIGNAL(clicked()), this, SLOT(start()));
+    QObject::connect(ui->save, SIGNAL(clicked()), this, SLOT(saveFile()));
+    QObject::connect(ui->open, SIGNAL(clicked()), this, SLOT(loadFile()));
+
     ui->tabWidget->setCurrentWidget(ui->programTab);
 
 
@@ -62,4 +69,46 @@ void MainWindow::start()
     {
         std::cout << e.what() << std::endl;
     }
+}
+
+void MainWindow::loadFile()
+{
+    qDebug() << "Load!";
+    QString name = QFileDialog::getOpenFileName(this, tr("Otwórz program"),".", "Programy (*.kmp);;Wszystkie (*.*)");
+    qDebug() << name;
+    if (!name.isEmpty())
+    {
+        QFile file(name);
+        if (!file.open(QIODevice::ReadOnly))
+        {
+            QMessageBox::information(this, "Błąd", file.errorString());
+        } else
+        {
+            QTextStream s(&file);
+            ui->source->setPlainText(s.readAll());
+        }
+    }
+
+}
+
+void MainWindow::saveFile()
+{
+   qDebug() << "Save!";
+   qDebug() << "Load!";
+   QString name = QFileDialog::getSaveFileName(this, tr("Zapisz program"),".", "Programy (*.kmp);;Wszystkie (*.*)");
+   qDebug() << name;
+   if (!name.isEmpty())
+   {
+       QFile file(name);
+       if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+       {
+           QMessageBox::information(this, "Błąd", file.errorString());
+       } else
+       {
+           QTextStream s(&file);
+           //ui->source->setPlainText(s.readAll());
+           s << ui->source->toPlainText();
+           file.close();
+       }
+   }
 }
