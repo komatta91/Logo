@@ -3,6 +3,7 @@
 
 Program::Program(void)
 {
+	functions = new std::map<std::string, FunctionDeclaration*>();
 }
 
 
@@ -12,6 +13,7 @@ Program::~Program(void)
 	{
 		delete (*statement);
 	}
+	delete functions;
 }
 
 int Program::Execute(void)
@@ -23,7 +25,17 @@ int Program::Execute(void)
 	return 0;
 }
 
+void Program::AddFunction(std::string name, FunctionDeclaration* func)
+{
+	(*functions)[name] = func;
+}
+
 void Program::AddStatement(Statement* statement)
 {
 	statements.push_back(statement);
+}
+
+FunctionDeclaration* Program::GetFunction(std::string ident)
+{
+	return (*functions)[ident];
 }

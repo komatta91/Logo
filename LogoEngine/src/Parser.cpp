@@ -34,7 +34,11 @@ bool Parser::Parse(void)
 				//actual.push(end);
 				//break;
 			default:
-				if (!ParseLine())
+				Statement* s = ParseLine();
+				if (s)
+				{
+					program->AddStatement(s);
+				} else
 				{
 					sendError();
 				}
@@ -46,11 +50,63 @@ bool Parser::Parse(void)
 
 bool Parser::parseFunctionDec()
 {
-	return true;
+	actual.pop();
+	setOnTop();
+	std::list<std::string>* divs = new std::list<std::string>();
+	std::list<Statement*>* func = new std::list<Statement*>();
+	if (actual.top() == ident)
+	{
+		std::string name = scan->Spell();
+		actual.pop();
+		setOnTop();
+		while (actual.top() != nl)
+		{
+			if (actual.top() == ident)
+			{
+				std::string div = scan->Spell();
+				divs->push_back(div);
+				actual.pop();
+				setOnTop();
+			}
+			else
+			{
+				while (actual.top() != juz && actual.top() != end)
+				{
+					actual.pop();
+					setOnTop();
+				}
+				return false;
+			}
+		}
+		actual.pop();
+		setOnTop();
+		while (actual.top() != juz && actual.top() != error && actual.top() != end)
+		{
+			Statement* s = ParseLine();
+			func->push_back(s);
+			setOnTop();
+		}
+		if (actual.top() == juz)
+		{
+			actual.pop();
+			setOnTop();
+			if (actual.top() == nl)
+			{
+				actual.pop();
+				FunctionDeclaration* dec = new FunctionDeclaration(name, divs, func);
+				program->AddFunction(name, dec);
+				return true;
+			}
+			return true;
+		}
+
+	}
+	return false;
 }
 
-bool Parser::ParseLine()
+Statement* Parser::ParseLine()
 {
+	Statement* s = nullptr;
 	switch (actual.top())
 	{
 		case np: 
@@ -59,8 +115,7 @@ bool Parser::ParseLine()
 		case lw: 
 		case czekaj:
 			{
-				Command* c = parseCommand();
-				program->AddStatement(c);
+				s = parseCommand();
 				break;
 			}
 		case pod: 
@@ -69,32 +124,105 @@ bool Parser::ParseLine()
 		case wroc:
 		case czysc:
 			{
-				Order* o = parseOrder();
-				program->AddStatement(o);
+				s = parseOrder();
 				break;
 			}
 		case jesli:
 			{
-				Condition* c = parseCondition();
-				program->AddStatement(c);
+				s = parseCondition();
 				break;
 			}
+		case powtorz:
+		{
+			s = parseRepeat();
+			break;
+		}
+		case ident:
+		{
+			std::string ident = scan->Spell();
+			actual.pop();
+			setOnTop();
+			if (actual.top() == becomes)
+			{
+				s = parseVariableAssignment(ident);
+				break;
+			}
+			s = parseFunctionCall(ident);
+			break;
+		}
+		case define:
+		{
+			s = parseVariableDeclaration();
+			break;
+		}
 	}
 
 	setOnTop();
 	if (actual.top() == nl)
 	{
 		actual.pop();
-		return true;
+		return s;
 	}
 	//sendError();
 	if (actual.top() == error)
 	{
 		actual.pop();
 	}
-	return false;
+	return nullptr;
 }
 
+Repeat* Parser::parseRepeat()
+{
+	//Repeat* repeat = nullptr;
+	SimpExpr* expr;
+	std::list<Statement*>* list;
+	actual.pop();
+	expr = parseSimpleExpr();
+	list = parseList();
+	return new Repeat(expr, list);
+}
+
+FunctionCall* Parser::parseFunctionCall(std::string ident)
+{
+	std::list<SimpExpr*>* list = new std::list<SimpExpr*>();
+	FunctionDeclaration* func = program->GetFunction(ident);
+	int count;
+	if (func)
+	{
+		count = func->GetParameters()->size();
+		for (int i = 0; i < count; ++i)
+		{
+			SimpExpr* expr = parseSimpleExpr();
+			list->push_back(expr);
+			setOnTop();
+		}
+		return new FunctionCall(program, ident, list);
+	} 
+	return nullptr;
+	//while (actual.top() != nl)
+	
+}
+
+VariableDeclaration* Parser::parseVariableDeclaration()
+{
+	actual.pop();
+	setOnTop();
+	if (actual.top() == ident)
+	{
+		std::string name = scan->Spell();
+		actual.pop();
+		SimpExpr* expr = parseSimpleExpr();
+		return new VariableDeclaration(name, expr);
+	}
+	return nullptr;
+}
+
+VariableAssignment* Parser::parseVariableAssignment(std::string ident)
+{
+	actual.pop();
+	SimpExpr* expr = parseSimpleExpr();
+	return new VariableAssignment(ident, expr);
+}
 
 SimpExpr* Parser::parseSimpleExpr()
 {
@@ -249,6 +377,31 @@ std::list<Statement*>* Parser::parseList()
 						temp->push_back(c);
 						break;
 					}
+				case powtorz:
+					{
+						Repeat* r = parseRepeat();
+						temp->push_back(r);
+						break;
+					}
+				case ident:
+					{
+						std::string ident = scan->Spell();
+						actual.pop();
+						setOnTop();
+						if (actual.top() == becomes)
+						{
+							VariableAssignment* a = parseVariableAssignment(ident);
+							temp->push_back(a);
+							break;
+						}
+						FunctionCall* f = parseFunctionCall(ident);
+						temp->push_back(f);
+						break;
+					}
+				case define:
+				{
+					break;
+				}
 				default:
 					{
 						//std::cout << "Error" << std::endl;

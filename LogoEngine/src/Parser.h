@@ -19,11 +19,15 @@ public:
 
 private:
 	bool parseFunctionDec();
-	bool ParseLine();
+	Statement* ParseLine();
 	
 	Command* parseCommand();
 	Order* parseOrder();
 	Condition* parseCondition();
+	Repeat* parseRepeat();
+	FunctionCall* parseFunctionCall(std::string ident);
+	VariableAssignment* parseVariableAssignment(std::string ident);
+	VariableDeclaration* parseVariableDeclaration();
 
 
 	SimpExpr* parseSimpleExpr();

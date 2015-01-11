@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,13 +19,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -78,11 +78,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Statements\FunctionDeclaration.cpp" />
+    <ClCompile Include="src\Statements\FunctionCall.cpp" />
+    <ClCompile Include="src\Statements\VariableAssignment.cpp" />
     <ClCompile Include="src\Statements\Condition.cpp" />
     <ClCompile Include="src\Statements\Order.cpp" />
     <ClCompile Include="src\Statements\Program.cpp" />
     <ClCompile Include="src\Parser.cpp" />
     <ClCompile Include="src\Statements\Factor.cpp" />
+    <ClCompile Include="src\Statements\Repeat.cpp" />
     <ClCompile Include="src\Statements\SimpExpr.cpp" />
     <ClCompile Include="src\Statements\Command.cpp" />
     <ClCompile Include="src\Scan.cpp" />
@@ -90,14 +94,20 @@
     <ClCompile Include="src\Statements\Statement.cpp" />
     <ClCompile Include="src\Statements\Term.cpp" />
     <ClCompile Include="src\Stack.cpp" />
+    <ClCompile Include="src\Statements\VariableDeclaration.cpp" />
+    <ClCompile Include="src\Turtle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Statements\FunctionDeclaration.h" />
+    <ClInclude Include="src\Statements\FunctionCall.h" />
+    <ClInclude Include="src\Statements\VariableAssignment.h" />
     <ClInclude Include="src\Statements\Condition.h" />
     <ClInclude Include="src\Statements\Order.h" />
     <ClInclude Include="src\Statements\AllStatements.h" />
     <ClInclude Include="src\Statements\Program.h" />
     <ClInclude Include="src\Parser.h" />
     <ClInclude Include="src\Statements\Factor.h" />
+    <ClInclude Include="src\Statements\Repeat.h" />
     <ClInclude Include="src\Statements\SimpExpr.h" />
     <ClInclude Include="src\Statements\Command.h" />
     <ClInclude Include="src\Scan.h" />
@@ -105,6 +115,8 @@
     <ClInclude Include="src\Statements\Term.h" />
     <ClInclude Include="src\Stack.h" />
     <ClInclude Include="src\SysType.h" />
+    <ClInclude Include="src\Statements\VariableDeclaration.h" />
+    <ClInclude Include="src\Turtle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
