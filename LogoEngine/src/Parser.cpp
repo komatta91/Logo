@@ -18,146 +18,111 @@ Parser::~Parser(void)
 bool Parser::Parse(void)
 {
 	status = true;
-	//SysType type;
 	setOnTop();
-	while(end != actual.top())
-	{
-		switch (actual.top())
-		{
-			case oto: 
-				if (!parseFunctionDec())
-				{
-					sendError();
-				}
-				break;
-			//case error:
-				//sendError();
-				//actual.push(end);
-				//break;
-			default:
-				Statement* s = ParseLine();
-				if (s)
-				{
-					program->AddStatement(s);
-				} else
-				{
-					sendError();
-				}
-		}
-		setOnTop();
-	}
+	
+        Statement* s = parseFunctionDec();
+        while (s != nullptr)
+        {
+            FunctionDeclaration* func = static_cast<FunctionDeclaration*>(s);
+            program->AddFunction(func->GetName(), func);
+			setOnTop();
+            s = parseFunctionDec();
+        }
+        s = ParseLine();
+        while (s != nullptr)
+        {
+            program->AddStatement(s);
+			setOnTop();
+            s = ParseLine();
+        }
 	return status;
 }
 
-bool Parser::parseFunctionDec()
+FunctionDeclaration* Parser::parseFunctionDec()
 {
-	actual.pop();
-	setOnTop();
-	std::list<std::string>* divs = new std::list<std::string>();
-	std::list<Statement*>* func = new std::list<Statement*>();
-	if (actual.top() == ident)
-	{
-		std::string name = scan->Spell();
+    if (actual.top() == oto)
+    {
+        FunctionDeclaration* dec = nullptr;
 		actual.pop();
 		setOnTop();
-		while (actual.top() != nl)
+		std::list<std::string>* divs = new std::list<std::string>();
+		std::list<Statement*>* func = new std::list<Statement*>();
+		if (actual.top() == ident)
 		{
-			if (actual.top() == ident)
+			std::string name = scan->Spell();
+			actual.pop();
+			setOnTop();
+			while (actual.top() != nl)
 			{
-				std::string div = scan->Spell();
-				divs->push_back(div);
-				actual.pop();
-				setOnTop();
-			}
-			else
-			{
-				while (actual.top() != juz && actual.top() != end)
+				if (actual.top() == ident)
 				{
+					std::string div = scan->Spell();
+					divs->push_back(div);
 					actual.pop();
 					setOnTop();
 				}
-				return false;
+				else
+				{
+					while (actual.top() != juz && actual.top() != end)
+					{
+						actual.pop();
+						setOnTop();
+					}
+					return false;
+				}
 			}
-		}
-		actual.pop();
-		setOnTop();
-		while (actual.top() != juz && actual.top() != error && actual.top() != end)
-		{
-			Statement* s = ParseLine();
-			func->push_back(s);
-			setOnTop();
-		}
-		if (actual.top() == juz)
-		{
 			actual.pop();
 			setOnTop();
-			if (actual.top() == nl)
+			while (actual.top() != juz && actual.top() != error && actual.top() != end)
+			{
+				Statement* s = ParseLine();
+				func->push_back(s);
+				setOnTop();
+			}
+			if (actual.top() == juz)
 			{
 				actual.pop();
-				FunctionDeclaration* dec = new FunctionDeclaration(name, divs, func);
-				program->AddFunction(name, dec);
-				return true;
-			}
-			return true;
-		}
+				setOnTop();
+				if (actual.top() == nl)
+				{
+					actual.pop();
+		            dec = new FunctionDeclaration(name, divs, func);
+		            //program->AddFunction(name, dec);
 
-	}
-	return false;
+				}
+		        return dec;
+			}
+
+		}
+    }
+    return nullptr;
 }
 
 Statement* Parser::ParseLine()
 {
 	Statement* s = nullptr;
-	switch (actual.top())
-	{
-		case np: 
-		case wst: 
-		case pw: 
-		case lw: 
-		case czekaj:
-			{
-				s = parseCommand();
-				break;
-			}
-		case pod: 
-		case opu:
-		case zmaz: 
-		case wroc:
-		case czysc:
-			{
-				s = parseOrder();
-				break;
-			}
-		case jesli:
-			{
-				s = parseCondition();
-				break;
-			}
-		case powtorz:
-		{
-			s = parseRepeat();
-			break;
-		}
-		case ident:
-		{
-			std::string ident = scan->Spell();
-			actual.pop();
-			setOnTop();
-			if (actual.top() == becomes)
-			{
-				s = parseVariableAssignment(ident);
-				break;
-			}
-			s = parseFunctionCall(ident);
-			break;
-		}
-		case define:
-		{
-			s = parseVariableDeclaration();
-			break;
-		}
-	}
 
+	s = parseCommand();
+	if (s == nullptr)
+	{
+		s = parseOrder();
+	}
+	if (s == nullptr)
+	{
+		s = parseIdent();
+	}
+	if (s == nullptr)
+	{
+		s = parseCondition();
+	}
+	if (s == nullptr)
+	{
+		s = parseRepeat();
+	}
+	if (s == nullptr)
+	{
+		s = parseVariableDeclaration();
+	}
 	setOnTop();
     if (actual.top() == nl || actual.top() == end)
 	{
@@ -172,8 +137,28 @@ Statement* Parser::ParseLine()
 	return nullptr;
 }
 
+Statement* Parser::parseIdent()
+{
+	if (actual.top() ==  ident)
+	{
+		Statement* s = nullptr;
+		std::string ident = scan->Spell();
+		actual.pop();
+		setOnTop();
+		s = parseVariableAssignment(ident);
+		if (s == nullptr)
+		{
+			s = parseFunctionCall(ident);
+		}
+		return s;
+	}
+	return nullptr;
+}
+
 Repeat* Parser::parseRepeat()
 {
+	if (actual.top() == powtorz)
+	{
 	//Repeat* repeat = nullptr;
 	SimpExpr* expr;
 	std::list<Statement*>* list;
@@ -181,6 +166,8 @@ Repeat* Parser::parseRepeat()
 	expr = parseSimpleExpr();
 	list = parseList();
 	return new Repeat(expr, list);
+	}
+	return nullptr;
 }
 
 FunctionCall* Parser::parseFunctionCall(std::string ident)
@@ -206,23 +193,32 @@ FunctionCall* Parser::parseFunctionCall(std::string ident)
 
 VariableDeclaration* Parser::parseVariableDeclaration()
 {
-	actual.pop();
-	setOnTop();
-	if (actual.top() == ident)
+	if (actual.top() == define)
 	{
-		std::string name = scan->Spell();
 		actual.pop();
-		SimpExpr* expr = parseSimpleExpr();
-		return new VariableDeclaration(name, expr);
+		setOnTop();
+		if (actual.top() == ident)
+		{
+			std::string name = scan->Spell();
+			actual.pop();
+			SimpExpr* expr = parseSimpleExpr();
+			return new VariableDeclaration(name, expr);
+		}
+		return nullptr;
 	}
 	return nullptr;
 }
 
 VariableAssignment* Parser::parseVariableAssignment(std::string ident)
 {
-	actual.pop();
-	SimpExpr* expr = parseSimpleExpr();
-	return new VariableAssignment(ident, expr);
+		if (actual.top() == becomes)
+		{
+		actual.pop();
+		SimpExpr* expr = parseSimpleExpr();
+		return new VariableAssignment(ident, expr);
+		}
+		return nullptr;
+
 }
 
 SimpExpr* Parser::parseSimpleExpr()
@@ -281,21 +277,45 @@ Factor* Parser::parseFactor()
 
 Command* Parser::parseCommand()
 {
-	SysType type = actual.top();
-	actual.pop();
-	return new Command(type, parseSimpleExpr());
+	switch (actual.top())
+	{
+	case np:
+	case wst:
+	case pw:
+	case lw:
+	case czekaj:
+	{
+		SysType type = actual.top();
+		actual.pop();
+		return new Command(type, parseSimpleExpr());
+	}
+	}
+	return nullptr;
 	//actual.pop();
 }
 
 Order* Parser::parseOrder()
 {
-	SysType type = actual.top();
-	actual.pop();
-	return new Order(type);
+	switch (actual.top())
+	{
+	case pod:
+	case opu:
+	case zmaz:
+	case wroc:
+	case czysc:
+	{
+		SysType type = actual.top();
+		actual.pop();
+		return new Order(type);
+	}
+	}
+	return nullptr;
 }
 
 Condition* Parser::parseCondition()
 {
+	if (actual.top() == jesli)
+	{
     SysType type = actual.top();
 	actual.pop();
 	setOnTop();
@@ -329,13 +349,9 @@ Condition* Parser::parseCondition()
 				return new Condition(expr1, op, expr2, list1);
 			}
 		}
-		
+	}
+	return nullptr;
 	} 
-	//SimpExpr* se1 = parseSimpleExpr();
-	//SimpExpr* se1 = parseSimpleExpr();
-
-	//return new Condition(parseSimpleExpr(), parseSimpleExpr, 
-	
 	return 0;
 }
 
@@ -350,64 +366,31 @@ std::list<Statement*>* Parser::parseList()
 		std::list<Statement*>* temp = new std::list<Statement*>();
 		while(true)
 		{
-			switch (actual.top())
+			Statement* s = nullptr;
+
+			s = parseCommand();
+			if (s == nullptr)
 			{
-				case np: 
-				case wst: 
-				case pw: 
-				case lw: 
-				case czekaj:
-					{
-						Command* c = parseCommand();
-						temp->push_back(c);
-						break;
-					}
-				case pod: 
-				case opu:
-				case zmaz: 
-				case wroc:
-				case czysc:
-					{
-						Order* o = parseOrder();
-						temp->push_back(o);
-						break;
-					}
-				case jesli:
-					{
-						Condition* c = parseCondition();
-						temp->push_back(c);
-						break;
-					}
-				case powtorz:
-					{
-						Repeat* r = parseRepeat();
-						temp->push_back(r);
-						break;
-					}
-				case ident:
-					{
-						std::string ident = scan->Spell();
-						actual.pop();
-						setOnTop();
-						if (actual.top() == becomes)
-						{
-							VariableAssignment* a = parseVariableAssignment(ident);
-							temp->push_back(a);
-							break;
-						}
-						FunctionCall* f = parseFunctionCall(ident);
-						temp->push_back(f);
-						break;
-					}
-				case define:
-				{
-					break;
-				}
-				default:
-					{
-						//std::cout << "Error" << std::endl;
-						actual.push(error);
-					}
+				s = parseOrder();
+			}
+			if (s == nullptr)
+			{
+				s = parseIdent();
+			}
+			if (s == nullptr)
+			{
+				s = parseCondition();
+			}
+			if (s == nullptr)
+			{
+				s = parseRepeat();
+			}
+			if (s != nullptr)
+			{
+				temp->push_back(s);
+			} else
+			{
+				actual.push(error);
 			}
 			setOnTop();
 			if (rbracket == actual.top())

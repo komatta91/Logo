@@ -19,9 +19,10 @@ public:
     std::list<std::string> GetErrors() const;
 
 private:
-	bool parseFunctionDec();
+    FunctionDeclaration* parseFunctionDec();
 	Statement* ParseLine();
 	
+	Statement* parseIdent();
 	Command* parseCommand();
 	Order* parseOrder();
 	Condition* parseCondition();

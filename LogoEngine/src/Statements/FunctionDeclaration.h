@@ -13,6 +13,7 @@ class FunctionDeclaration :
 public:
 	FunctionDeclaration(std::string ident, std::list<std::string>* parameter, std::list<Statement*>* function);
 	std::list<std::string>* GetParameters();
+    std::string GetName() { return ident; }
 	int Execute();
 	virtual ~FunctionDeclaration();
 };

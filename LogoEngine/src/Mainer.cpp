@@ -115,16 +115,6 @@ int main(int argc, const char* argv[])
 	{
 		std::cout << e.what() << std::endl;
 	}
-
-
-	//Factor* fac = new Factor(10);
-	//Term* term = new Term(fac, '*', fac);
-	//SimpExpr* exp = new SimpExpr(term, '+', term);
-
-	//std::cout << "SimpExpr: " << exp->Execute() << std::endl;
-	
-
-
 	std::cout << "Hello!!!" << std::endl;
 
 #if defined(DEBUG) || defined(_DEBUG)
